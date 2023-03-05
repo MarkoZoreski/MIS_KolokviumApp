@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:lab3/screens/main_screen.dart';
+import 'package:lab3/screens/register_screen.dart';
 
 class LoginPage extends StatefulWidget {
   static const routeName = '/login';
@@ -18,17 +19,24 @@ class _LoginPageState extends State<LoginPage> {
     final username = _usernameController.text;
     final password = _passwordController.text;
     if (_formKey.currentState!.validate()) {
-      final box = await Hive.openBox('localstorage');
-      final userPassword = box.get(username);
-      if (userPassword == password) {
+      final box = Hive.box('localstorage');
+      print(box.length);
+      final user = box.get(username);
+      if (user == null) {
         // Navigate to the next page
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => MainScreen()),
-        );
-      } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid username or password')),
+          SnackBar(content: Text('User does not exist')),
+        );
+      }
+      else if(user.password == password){
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainScreen()),
+        );
+      }
+      else{
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Invalid username or password')),
         );
       }
     }
@@ -37,7 +45,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Login')),
+      appBar: AppBar(title: Text('Login'),
+          actions: <Widget>[
+          IconButton(
+          icon: Icon(Icons.app_registration),
+          onPressed: () async {
+        Navigator.of(context).pushReplacementNamed(RegistrationPage.routeName);
+        },
+          ),
+          ]
+      ),
       body: Container(
         padding: EdgeInsets.all(8),
         child: Form(

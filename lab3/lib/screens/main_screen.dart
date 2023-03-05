@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:lab3/service/auth_service.dart';
 
 import '../model/list_item.dart';
 import '../model/user.dart';
@@ -21,8 +20,6 @@ class _MainScreenState extends State<MainScreen> {
     ListItem(id: "T2", subject_name: "Verojatnost",date: DateTime.now()),
   ];
 
-  final auth = AuthService();
-  final userBox = Hive.box('localstorage');
 
   void _addItemFunction(BuildContext ct) {
     //
@@ -63,7 +60,6 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   PreferredSizeWidget _createAppBar() {
-    final user = userBox.get('localstorage') as User?;
     return AppBar(
       // The title text which will be shown on the action bar
         title: Text("KolokviumiApp"),
@@ -71,7 +67,6 @@ class _MainScreenState extends State<MainScreen> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
-              await auth.logout();
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
             },
           ),

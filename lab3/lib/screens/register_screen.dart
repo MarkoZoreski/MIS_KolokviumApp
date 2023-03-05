@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lab3/model/user.dart';
+import 'package:lab3/screens/login_screen.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -13,19 +14,20 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   void _registerUser() {
-    final email = _emailController.text;
+    final username = _usernameController.text;
     final password = _passwordController.text;
     final confirmPassword = _confirmPasswordController.text;
 
     if (_formKey.currentState!.validate() && password == confirmPassword) {
       final box = Hive.box('localstorage');
-      final user = User(email: email, password: password);
-      box.put(email, user); // add the user to the database
+      print(box.length);
+      final user = User(username: username, password: password);
+      box.put(username, user); // add the user to the database
       Navigator.pop(context);
     }
   }
@@ -33,7 +35,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Register')),
+      appBar: AppBar(title: Text('Register'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.login),
+              onPressed: () async {
+                Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
+              },
+            ),
+          ]),
       body: Container(
         padding: EdgeInsets.all(16),
         child: Form(
@@ -41,12 +51,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: Column(
             children: [
               TextFormField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
+                controller: _usernameController,
+                decoration: InputDecoration(labelText: 'username'),
                 validator: (value) {
                   if (value!.isEmpty) {
-                    return 'Email is required';
+                    return 'username is required';
                   }
                   return null;
                 },

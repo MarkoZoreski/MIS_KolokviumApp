@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:lab3/model/user.dart';
 
 import 'screens/main_screen.dart';
 import 'screens/list_detail_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 
-import 'package:lab3/service/auth_service.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(UserAdapter());
   await Hive.openBox('localstorage');
   runApp(MyApp());
 }
