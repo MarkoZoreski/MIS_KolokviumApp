@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lab3/model/user.dart';
 
+import 'model/list_item.dart';
 import 'screens/main_screen.dart';
 import 'screens/list_detail_screen.dart';
 import 'screens/login_screen.dart';
@@ -12,6 +13,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(ListItemAdapter());
   await Hive.openBox('localstorage');
   runApp(MyApp());
 }

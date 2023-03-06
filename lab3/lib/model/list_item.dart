@@ -1,13 +1,13 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+part 'list_item.g.dart';
 
 @HiveType(typeId: 1)
-class ListItem {
+class ListItem extends HiveObject{
   @HiveField(0)
   final String id;
   @HiveField(1)
   final String subject_name;
-  @HiveField(3)
+  @HiveField(2)
   final DateTime date;
 
   ListItem({

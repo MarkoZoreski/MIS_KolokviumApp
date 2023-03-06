@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
 import 'list_item.dart';
@@ -10,7 +11,8 @@ class User extends HiveObject {
   @HiveField(1)
   final String password;
   @HiveField(2)
-  final List<ListItem> userItems = [];
+  List<ListItem> userItems = [];
 
   User({required this.username, required this.password });
+
 }

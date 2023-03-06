@@ -46,12 +46,17 @@ class _MainScreenState extends State<MainScreen> {
   void _addNewItemToList(ListItem item) {
     setState(() {
       _userItems.add(item);
+      currentUser?.userItems = _userItems;
+      currentUser?.save();
+      //box.put(currentUser?.username, currentUser);
     });
   }
 
   void _deleteItem(BuildContext context, String id) {
     setState(() {
       _userItems.removeWhere((elem) => elem.id == id);
+      currentUser?.userItems = _userItems;
+      currentUser?.save();
     });
   }
 
@@ -79,9 +84,10 @@ class _MainScreenState extends State<MainScreen> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
-              // currentUser?.userItems.addAll(_userItems);
-              // _userItems = [];
-              //box.delete('currentUser');
+              currentUser?.userItems = _userItems;
+              currentUser?.save();
+              _userItems = [];
+              box.delete('currentUser');
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
             },
           ),

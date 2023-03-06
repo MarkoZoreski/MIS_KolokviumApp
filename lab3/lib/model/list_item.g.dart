@@ -1,54 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'list_item.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class UserAdapter extends TypeAdapter<User> {
+class ListItemAdapter extends TypeAdapter<ListItem> {
   @override
-  final int typeId = 0;
-
-  List<ListItem> get userItems => [];
-
-
-
-
+  final int typeId = 1;
 
   @override
-  User read(BinaryReader reader) {
+  ListItem read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(
-      username: fields[0] as String,
-      password: fields[1] as String,
-    )..userItems = (fields[2] as List?)?.cast<ListItem>() ?? [];
+    return ListItem(
+      id: fields[0] as String,
+      subject_name: fields[1] as String,
+      date: fields[2] as DateTime,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, User obj) {
+  void write(BinaryWriter writer, ListItem obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.username)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.password)
+      ..write(obj.subject_name)
       ..writeByte(2)
-      ..write(obj.userItems);
+      ..write(obj.date);
   }
 
   @override
   int get hashCode => typeId.hashCode;
 
-  
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
+      other is ListItemAdapter &&
           runtimeType == other.runtimeType &&
-          typeId == other.typeId &&
-          listEquals(userItems, other.userItems);
+          typeId == other.typeId;
 }

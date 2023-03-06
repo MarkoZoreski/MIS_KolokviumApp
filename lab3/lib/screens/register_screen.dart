@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:lab3/model/list_item.dart';
 import 'package:lab3/model/user.dart';
 import 'package:lab3/screens/login_screen.dart';
 
@@ -26,6 +27,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     if (_formKey.currentState!.validate() && password == confirmPassword) {
       final box = Hive.box('localstorage');
       print(box.length);
+      List<ListItem> emptylist = [];
       final user = User(username: username, password: password);
       box.put(username, user); // add the user to the database
       box.put('currentUser',user.username);
