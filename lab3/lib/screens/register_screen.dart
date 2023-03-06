@@ -28,6 +28,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       print(box.length);
       final user = User(username: username, password: password);
       box.put(username, user); // add the user to the database
+      box.put('currentUser',user.username);
       Navigator.pop(context);
     }
   }

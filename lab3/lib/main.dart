@@ -18,6 +18,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  final box = Hive.box('localstorage');
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           accentColor: Colors.red,
         ),
-        initialRoute: RegistrationPage.routeName,
+        initialRoute: box.get('currentUser')!=null? MainScreen.routeName : LoginPage.routeName,
         routes: {
           '/': (context) => MainScreen(),
           ListDetailScreen.routeName: (ctx) => ListDetailScreen(),

@@ -10,15 +10,27 @@ import 'login_screen.dart';
 class MainScreen extends StatefulWidget {
   static const routeName = '/';
 
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  List<ListItem> _userItems = [
-    ListItem(id: "T1", subject_name: "Kalkulus", date: DateTime.now()),
-    ListItem(id: "T2", subject_name: "Verojatnost",date: DateTime.now()),
-  ];
+  final box = Hive.box('localstorage');
+  User? currentUser;
+  final currentUsername = '';
+  List<ListItem> _userItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUsername = box.get('currentUser');
+    if(currentUsername != null) {
+      currentUser = box.get(currentUsername);
+      _userItems = currentUser!.userItems;
+    }
+  }
+
 
 
   void _addItemFunction(BuildContext ct) {
@@ -67,6 +79,9 @@ class _MainScreenState extends State<MainScreen> {
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () async {
+              // currentUser?.userItems.addAll(_userItems);
+              // _userItems = [];
+              //box.delete('currentUser');
               Navigator.of(context).pushReplacementNamed(LoginPage.routeName);
             },
           ),

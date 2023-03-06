@@ -25,10 +25,12 @@ class _LoginPageState extends State<LoginPage> {
       if (user == null) {
         // Navigate to the next page
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('User does not exist')),
+          SnackBar(content: Text('User does not exist!'
+              'Click the button in the corner to register')),
         );
       }
       else if(user.password == password){
+        box.put('currentUser',user.username);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => MainScreen()),
@@ -46,6 +48,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Login'),
+          automaticallyImplyLeading: false,
           actions: <Widget>[
           IconButton(
           icon: Icon(Icons.app_registration),
