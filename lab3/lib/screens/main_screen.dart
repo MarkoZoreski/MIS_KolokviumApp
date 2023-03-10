@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../model/list_item.dart';
 import '../model/user.dart';
 import '../widgets/new_element.dart';
 import '../widgets/my_list_tile.dart';
 import 'login_screen.dart';
+import 'package:lab3/widgets/Calendar.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = '/';
@@ -40,6 +42,16 @@ class _MainScreenState extends State<MainScreen> {
         builder: (_) {
           return GestureDetector(onTap: () {
           }, child: NewElement(_addNewItemToList), behavior: HitTestBehavior.opaque);
+        });
+  }
+  void _showCalendar(BuildContext ct) {
+    //
+    showModalBottomSheet(
+        context: ct,
+        builder: (_) {
+          return GestureDetector(onTap: () {
+          }, child: Calendar(),
+              behavior: HitTestBehavior.opaque);
         });
   }
 
@@ -103,6 +115,12 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: _createAppBar(),
       body: _createBody(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue,
+        onPressed: () => _showCalendar(context),
+        child: Icon(Icons.calendar_month),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
