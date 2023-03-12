@@ -41,7 +41,7 @@ class ListItemAdapter extends TypeAdapter<ListItem> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ListItemAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+          other is ListItemAdapter &&
+              runtimeType == other.runtimeType &&
+              typeId == other.typeId;
 }

@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.18.0
   http: ^0.13.5
   table_calendar: ^3.0.9
+  flutter_local_notifications: ^9.7.0
 
 dev_dependencies:
   flutter_test:

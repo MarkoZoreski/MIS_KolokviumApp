@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../screens/list_detail_screen.dart';
 import '../model/list_item.dart';
+import 'package:intl/intl.dart';
 
 class MyListTile extends StatelessWidget {
   final ListItem item;
@@ -25,7 +26,7 @@ class MyListTile extends StatelessWidget {
       ),
       child: ListTile(
         title: Text(item.subject_name),
-        subtitle: Text("${item.date}"),
+        subtitle: Text(DateFormat('dd/MM/yyyy kk:mm').format(item.date)),
         onTap: () => _showDetail(context),
         trailing: IconButton(
           icon: Icon(Icons.delete),

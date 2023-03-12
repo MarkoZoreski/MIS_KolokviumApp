@@ -43,12 +43,12 @@ class UserAdapter extends TypeAdapter<User> {
   @override
   int get hashCode => typeId.hashCode;
 
-  
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is UserAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId &&
-          listEquals(userItems, other.userItems);
+          other is UserAdapter &&
+              runtimeType == other.runtimeType &&
+              typeId == other.typeId &&
+              listEquals(userItems, other.userItems);
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lab3/model/user.dart';
+import 'package:lab3/screens/calendar_detail_screen.dart';
 
 import 'model/list_item.dart';
 import 'screens/main_screen.dart';
 import 'screens/list_detail_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 
 Future<void> main() async {
@@ -15,6 +17,13 @@ Future<void> main() async {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(ListItemAdapter());
   await Hive.openBox('localstorage');
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+  final InitializationSettings initializationSettings =
+  InitializationSettings(android: initializationSettingsAndroid);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   runApp(MyApp());
 }
 
@@ -38,6 +47,7 @@ class MyApp extends StatelessWidget {
           ListDetailScreen.routeName: (ctx) => ListDetailScreen(),
           LoginPage.routeName: (ctx) => LoginPage(),
           RegistrationPage.routeName: (ctx) => const RegistrationPage(),
+          CalendarDetails.routeName: (ctx) => CalendarDetails(),
         }
       // A widget which will be started on application startup
     );

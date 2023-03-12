@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lab3/screens/calendar_detail_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:hive/hive.dart';
 
@@ -50,7 +51,7 @@ class _CalendarState extends State<Calendar> {
           List<ListItem> events = _userItems.where((event) => isSameDay(event.date, selectedDay)).toList();
 
           // Navigate to the list detail screen, passing in the list of events
-          Navigator.pushNamed(context, ListDetailScreen.routeName, arguments: events);
+          Navigator.pushNamed(context, CalendarDetails.routeName, arguments: events);
 
           // Update the selected day and focused day
           setState(() {

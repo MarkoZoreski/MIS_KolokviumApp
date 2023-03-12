@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -8,6 +10,10 @@ import '../widgets/new_element.dart';
 import '../widgets/my_list_tile.dart';
 import 'login_screen.dart';
 import 'package:lab3/widgets/Calendar.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 
 class MainScreen extends StatefulWidget {
   static const routeName = '/';
@@ -22,10 +28,12 @@ class _MainScreenState extends State<MainScreen> {
   User? currentUser;
   final currentUsername = '';
   List<ListItem> _userItems = [];
+  Random random = Random();
 
   @override
   void initState() {
     super.initState();
+    tz.initializeTimeZones();
     final currentUsername = box.get('currentUser');
     if(currentUsername != null) {
       currentUser = box.get(currentUsername);
@@ -50,19 +58,51 @@ class _MainScreenState extends State<MainScreen> {
         context: ct,
         builder: (_) {
           return GestureDetector(onTap: () {
-            
+
           }, child: Calendar(),
               behavior: HitTestBehavior.opaque);
         });
   }
+  Future<void> _scheduleNotification(ListItem item) async {
+    //check if the event is in less than an hour
+    if((item.date.difference(DateTime.now())).inHours<= 1){
+      return;
+    }
+    final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
-  void _addNewItemToList(ListItem item) {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      importance: Importance.max,
+      priority: Priority.high,
+      showWhen: false,
+    );
+    final notificationId = Random().nextInt(2147483647);
+
+    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails(android: androidPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        notificationId,
+        'Reminder: ${item.subject_name}',
+        'You have an event in 1 hour',
+        tz.TZDateTime.from(item.date.add(Duration(hours: -1)), tz.local),
+        platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime);
+  }
+  void _addNewItemToList(ListItem item) async{
     setState(() {
       _userItems.add(item);
       currentUser?.userItems = _userItems;
       currentUser?.save();
       //box.put(currentUser?.username, currentUser);
     });
+    // Schedule a notification 1 hour before the event
+    await _scheduleNotification(item);
   }
 
   void _deleteItem(BuildContext context, String id) {

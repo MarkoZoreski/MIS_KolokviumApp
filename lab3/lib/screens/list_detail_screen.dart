@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../model/list_item.dart';
 
@@ -7,28 +8,38 @@ class ListDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ListItem> items =
-    ModalRoute.of(context)?.settings.arguments as List<ListItem>;
-
+    final item = ModalRoute.of(context)?.settings.arguments as ListItem;
+    String formattedDate = DateFormat('dd/MM/yyyy kk:mm').format(item.date);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Events'),
+        title: Text("details for exam " + item.subject_name),
       ),
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (BuildContext context, int index) {
-          final item = items[index];
-          return Card(
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: ListTile(
-              title: Text(item.subject_name),
-              subtitle: Text(item.date.toString()),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+      body: Center(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            border: Border.all(
+              color: Colors.grey[400]!,
+              width: 1.0,
             ),
-          );
-        },
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Subject: ${item.subject_name}',
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8.0),
+              Text(
+                'Date: ${DateFormat('dd/MM/yyyy kk:mm').format(item.date)}',
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
