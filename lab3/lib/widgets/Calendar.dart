@@ -1,9 +1,10 @@
-// Copyright 2019 Aleksander Woźniak
-// SPDX-License-Identifier: Apache-2.0
-
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:hive/hive.dart';
 
+import 'package:lab3/model/list_item.dart';
+import 'package:lab3/model/user.dart';
+import 'package:lab3/screens/list_detail_screen.dart';
 import 'package:lab3/widgets/utils.dart';
 
 class Calendar extends StatefulWidget {
@@ -15,6 +16,20 @@ class _CalendarState extends State<Calendar> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  final box = Hive.box('localstorage');
+  User? currentUser;
+  final currentUsername = '';
+  List<ListItem> _userItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    final currentUsername = box.get('currentUser');
+    if (currentUsername != null) {
+      currentUser = box.get(currentUsername);
+      _userItems = currentUser!.userItems;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,32 +43,40 @@ class _CalendarState extends State<Calendar> {
         focusedDay: _focusedDay,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
-          // Use `selectedDayPredicate` to determine which day is currently selected.
-          // If this returns true, then `day` will be marked as selected.
-
-          // Using `isSameDay` is recommended to disregard
-          // the time-part of compared DateTime objects.
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
-          if (!isSameDay(_selectedDay, selectedDay)) {
-            // Call `setState()` when updating the selected day
-            setState(() {
-              _selectedDay = selectedDay;
-              _focusedDay = focusedDay;
-            });
+          // Get all events for the selected day
+          List<ListItem> events = _userItems.where((event) => isSameDay(event.date, selectedDay)).toList();
+
+          // Navigate to the list detail screen, passing in the list of events
+          Navigator.pushNamed(context, ListDetailScreen.routeName, arguments: events);
+
+          // Update the selected day and focused day
+          setState(() {
+            _selectedDay = selectedDay;
+            _focusedDay = focusedDay;
+          });
+        },
+        eventLoader: (day) {
+          final items = _userItems
+              .where((listItem) => isSameDay(listItem.date, day))
+              .toList();
+
+          if (items.isEmpty) {
+            return [];
           }
+
+          return items.map((listItem) => listItem).toList();
         },
         onFormatChanged: (format) {
           if (_calendarFormat != format) {
-            // Call `setState()` when updating calendar format
             setState(() {
               _calendarFormat = format;
             });
           }
         },
         onPageChanged: (focusedDay) {
-          // No need to call `setState()` here
           _focusedDay = focusedDay;
         },
       ),
