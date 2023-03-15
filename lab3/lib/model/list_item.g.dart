@@ -20,19 +20,25 @@ class ListItemAdapter extends TypeAdapter<ListItem> {
       id: fields[0] as String,
       subject_name: fields[1] as String,
       date: fields[2] as DateTime,
+      latitude: fields[3] as double,
+      longitude: fields[4] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, ListItem obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.subject_name)
       ..writeByte(2)
-      ..write(obj.date);
+      ..write(obj.date)
+      ..writeByte(3)
+      ..write(obj.latitude)
+      ..writeByte(4)
+      ..write(obj.longitude);
   }
 
   @override
@@ -41,7 +47,7 @@ class ListItemAdapter extends TypeAdapter<ListItem> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ListItemAdapter &&
-              runtimeType == other.runtimeType &&
-              typeId == other.typeId;
+      other is ListItemAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

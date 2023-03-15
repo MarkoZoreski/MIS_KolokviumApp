@@ -44,6 +44,12 @@ dependencies:
   http: ^0.13.5
   table_calendar: ^3.0.9
   flutter_local_notifications: ^9.7.0
+  geolocator: ^7.0.3
+  url_launcher: ^6.0.6
+  google_maps_flutter: ^2.2.5
+  flutter_map: ^3.1.0
+  latlong2: ^0.8.1
+  flutter_map_marker_cluster: ^1.0.2
 
 dev_dependencies:
   flutter_test:
