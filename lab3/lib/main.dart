@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lab3/model/user.dart';
 import 'package:lab3/screens/calendar_detail_screen.dart';
 import 'package:lab3/screens/map_screen.dart';
+import 'package:lab3/screens/user_markers.dart';
 
 import 'model/list_item.dart';
 import 'screens/main_screen.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           RegistrationPage.routeName: (ctx) => const RegistrationPage(),
           CalendarDetails.routeName: (ctx) => CalendarDetails(),
           MapScreen.routeName: (ctx) => MapScreen(),
+          UserMarkers.routeName: (ctx) => UserMarkers(),
         }
       // A widget which will be started on application startup
     );

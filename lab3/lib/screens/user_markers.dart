@@ -3,14 +3,13 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:positioned_tap_detector_2/positioned_tap_detector_2.dart';
 
-class MapScreen extends StatefulWidget {
-  static const routeName = 'locationSelectScreen';
+class UserMarkers extends StatefulWidget {
+  static const routeName = 'userMarkers';
   @override
-  _MapScreenState createState() => _MapScreenState();
+  _UserMarkersState createState() => _UserMarkersState();
 }
 
-class _MapScreenState extends State<MapScreen> {
-  late LatLng selectedLocation;
+class _UserMarkersState extends State<UserMarkers> {
   late MapController _mapController;
   List<Marker> _markers = [];
 
@@ -22,7 +21,7 @@ class _MapScreenState extends State<MapScreen> {
         height: 100.0,
         point: point,
         builder: (ctx) => Container(
-          child: Icon(Icons.location_pin, color: Colors.red, size: 50.0),
+          child: Icon(Icons.location_pin, color: Colors.red),
         ),
       ));
     });
@@ -36,23 +35,24 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _markers = ModalRoute.of(context)?.settings.arguments as List<Marker>;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Select Location'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () {
-              Navigator.of(context).pop(_markers.first.point);
-            },
-          ),
-        ],
+        title: Text('Select a location to calculate route',
+          style: TextStyle(fontSize: 14),),
+        // actions: [
+        //   IconButton(
+        //     icon: Icon(Icons.check),
+        //     onPressed: () {
+        //
+        //     },
+        //   ),
+        // ],
       ),
       body: FlutterMap(
         options: MapOptions(
           center: LatLng(42.004204515826544, 21.40954342273825), // Finki
           zoom: 15,
-          onTap: _handleTap,
         ),
         mapController: _mapController,
         nonRotatedChildren: [

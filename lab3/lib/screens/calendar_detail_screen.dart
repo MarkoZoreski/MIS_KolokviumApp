@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lab3/screens/list_detail_screen.dart';
 import '../model/list_item.dart';
 
 class CalendarDetails extends StatelessWidget {
   static const routeName = '/exams_detail';
 
   const CalendarDetails({super.key});
+
+  void _showDetail(BuildContext context, ListItem item) {
+    Navigator.of(context).pushNamed(
+      ListDetailScreen.routeName,
+      arguments: item,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class CalendarDetails extends StatelessWidget {
               title: Text('Subject: ${item.subject_name}'),
               subtitle: Text('Date: ${DateFormat('dd/MM/yyyy kk:mm').format(item.date)}',),
               onTap: () {
-                Navigator.of(context).pop();
+                _showDetail(context,item);
               },
             ),
           );

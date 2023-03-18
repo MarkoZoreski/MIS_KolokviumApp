@@ -1,7 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:hive/hive.dart';
+import 'package:lab3/screens/user_markers.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../model/list_item.dart';
@@ -51,6 +54,24 @@ class _MainScreenState extends State<MainScreen> {
           return GestureDetector(onTap: () {
           }, child: NewElement(_addNewItemToList), behavior: HitTestBehavior.opaque);
         });
+  }
+  void _showUserMarkers(BuildContext context) {
+    List<Marker> _markers = [];
+    for (var item in _userItems) {
+      var marker = Marker(
+        width: 100.0,
+        height: 100.0,
+        point: LatLng(item.latitude, item.longitude),
+        builder: (ctx) => Container(
+          child: Icon(Icons.location_pin, color: Colors.red, size: 50.0),
+        ),
+      );
+      _markers.add(marker);
+    }
+    Navigator.of(context).pushNamed(
+      UserMarkers.routeName,
+      arguments: _markers,
+    );
   }
   void _showCalendar(BuildContext ct) {
     //
@@ -156,12 +177,33 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: _createAppBar(),
       body: _createBody(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        onPressed: () => _showCalendar(context),
-        child: Icon(Icons.calendar_month),
+      floatingActionButton: Stack(
+        children: [
+          Positioned(
+            left: 40.0,
+            bottom: 10.0,
+            child: FloatingActionButton(
+              heroTag: 'calendar',
+              backgroundColor: Colors.blue,
+              onPressed: () => _showCalendar(context),
+              child: Icon(Icons.calendar_month),
+            ),
+          ),
+          Positioned(
+            right: 16.0,
+            bottom: 10.0,
+            child: FloatingActionButton(
+              heroTag: 'map',
+              backgroundColor: Colors.blue,
+              onPressed: () => _showUserMarkers(context),
+              child: Icon(Icons.map),
+            ),
+          ),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
+
+
 }
