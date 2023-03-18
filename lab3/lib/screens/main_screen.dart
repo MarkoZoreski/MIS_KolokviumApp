@@ -5,7 +5,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:hive/hive.dart';
 import 'package:lab3/screens/user_markers.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 import '../model/list_item.dart';
 import '../model/user.dart';
@@ -86,7 +85,7 @@ class _MainScreenState extends State<MainScreen> {
   }
   Future<void> _scheduleNotification(ListItem item) async {
     //check if the event is in less than an hour
-    if((item.date.difference(DateTime.now())).inHours<= 1){
+    if((item.date.difference(DateTime.now())).inMinutes<= 59){
       return;
     }
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -120,7 +119,6 @@ class _MainScreenState extends State<MainScreen> {
       _userItems.add(item);
       currentUser?.userItems = _userItems;
       currentUser?.save();
-      //box.put(currentUser?.username, currentUser);
     });
     // Schedule a notification 1 hour before the event
     await _scheduleNotification(item);
@@ -179,25 +177,22 @@ class _MainScreenState extends State<MainScreen> {
       body: _createBody(),
       floatingActionButton: Stack(
         children: [
-          Positioned(
-            left: 40.0,
-            bottom: 10.0,
-            child: FloatingActionButton(
-              heroTag: 'calendar',
-              backgroundColor: Colors.blue,
-              onPressed: () => _showCalendar(context),
-              child: Icon(Icons.calendar_month),
-            ),
-          ),
-          Positioned(
-            right: 16.0,
-            bottom: 10.0,
-            child: FloatingActionButton(
-              heroTag: 'map',
-              backgroundColor: Colors.blue,
-              onPressed: () => _showUserMarkers(context),
-              child: Icon(Icons.map),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              FloatingActionButton(
+                heroTag: 'calendar',
+                backgroundColor: Colors.blue,
+                onPressed: () => _showCalendar(context),
+                child: Icon(Icons.calendar_month),
+              ),
+              FloatingActionButton(
+                heroTag: 'map',
+                backgroundColor: Colors.blue,
+                onPressed: () => _showUserMarkers(context),
+                child: Icon(Icons.map),
+              ),
+            ],
           ),
         ],
       ),

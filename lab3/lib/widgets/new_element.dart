@@ -1,11 +1,8 @@
   import 'package:flutter/material.dart';
   import 'package:lab3/screens/map_screen.dart';
   import 'package:nanoid/nanoid.dart';
-  import 'package:intl/intl.dart';
-  import 'package:geolocator/geolocator.dart';
   import '../model/list_item.dart';
 
-  import 'package:google_maps_flutter/google_maps_flutter.dart';
 
   class NewElement extends StatefulWidget {
     final Function addNewItemToList;
@@ -70,14 +67,6 @@
       });
     }
 
-    void _getSelectedLocation() async {  // get current location
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      setState(() {
-        _latitude = position.latitude;
-        _longitude = position.longitude;
-      });
-    }
 
     @override
     Widget build(BuildContext context) {
